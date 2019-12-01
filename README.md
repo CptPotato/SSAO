@@ -49,8 +49,23 @@ When rendering at full resolution, all targets are the same size `(width, height
 
 ----
 
-Here's a comparison shot of the algorithm. It is injected into a game (*The House of da Vinci*) using custom shaders in [*ReShade*](https://github.com/crosire/reshade):
+### Screenshots
 
-![image](ao.gif)
+Here are some comparison screenshots of the algorithm. The SSAO was injected into each game using custom shaders in [*ReShade*](https://github.com/crosire/reshade):
 
-*on/off-comparison using 6 samples per pixel at half resolution*
+<details> 
+  <summary>view screenshots</summary>
+  
+  <br/>
+  
+  **The House of da Vinci** *(6 samples per pixel, 1/2 resolution)*
+  ![image](README/da_vinci.gif)
+  
+  **Portal 2** *(8 samples per pixel, full resolution)*
+  ![image](README/portal2.gif)
+  
+  **NaissanceE** *(6 samples per pixel, 1/2 resolution)*
+  ![image](README/naissancee.gif)
+</details>
+
+
