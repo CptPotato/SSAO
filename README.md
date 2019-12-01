@@ -2,7 +2,7 @@
 
 This is my SSAO algorithm implemented as a [SHADERed](https://github.com/dfranx/SHADERed) project (*using version 1.2.4*).
 
-It uses low discrepancy noise to generate the sampling kernel (see [GenSamples.c](GenSamples.c)). Combined with enough spatial filtering (blur), this attempts to get low noise and high coverage even at lower sample counts. In comparison to other algorithms, no noise texture is required. The randomized kernel is re-used instead.
+It uses low discrepancy noise to generate the sampling kernel (see [GenSamples.c](GenSamples.c)). Combined with enough spatial filtering (blur), this attempts to get low noise and high coverage even at lower sample counts. In comparison to other algorithms no noise texture is required, the randomized kernel is re-used instead.
 
 Rendering is split into three passes:
 
@@ -25,8 +25,6 @@ Rendering is split into three passes:
 
 For the most part, preprocessor definitions and shader constants can be used to pass these settings to the shaders as they don't change during runtime.
 
-
-
 ### Resolution
 
 The algorithm can operate at both half and full resolution. In the half-res scenario the rendertargets require the correct sizes:
@@ -37,7 +35,7 @@ The algorithm can operate at both half and full resolution. In the half-res scen
 | SSAO Filter X | `(width, height / 2)`     | `R8`   |
 | SSAO Filter Y | `(width, height)`         | `R8`   |
 
-When rendering at full resolution, all targets are the same size (`width, height`). Depending on the renderer, the last rendertarget can be skipped if SSAO is applied in the same pass.
+When rendering at full resolution, all targets are the same size `(width, height)`. Depending on the renderer, the last rendertarget can be skipped if SSAO is applied in the same pass.
 
 
 
@@ -45,7 +43,6 @@ When rendering at full resolution, all targets are the same size (`width, height
 
 - Depth buffer
 - Normal buffer
-
 
 
 
