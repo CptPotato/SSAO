@@ -10,8 +10,6 @@ Rendering is split into three passes:
 2. Filter X (and upsample if necessary)
 3. Filter Y (and upsample if necessary)
 
-
-
 ### Settings
 
 | Setting                 | Range                                                        |
@@ -20,8 +18,8 @@ Rendering is split into three passes:
 | radius limit (optional) | `any` (this limits the maximum SSAO radius to a fixed screen %; it could be hardcoded, aswell) |
 | sample count            | `1` to `16` per pixel, no preset steps                       |
 | resolution              | `full` or `half` (half: width / 2, height / 2; so 1/4 of the pixels) |
-| spatial filter size     | `5x5`, `7x5 ` or `7x7` (`3x3` is also possible, but maybe too low) |
-| spatial filter limit    | `depth` or `depth & normal` (this limits the bilateral blur; using the `normal` limit only works too, but is not very practical) |
+| spatial filter size     | `5x5`, `7x5` or `7x7` (`3x3` is also possible, but maybe too low) |
+| spatial filter limit    | `depth` or `depth & normal` (this limits the bilateral blur; using a `normal` limit only works too, but is not very practical) |
 
 For the most part, preprocessor definitions and shader constants can be used to pass these settings to the shaders as they don't change during runtime.
 
@@ -37,14 +35,10 @@ The algorithm can operate at both half and full resolution. In the half-res scen
 
 When rendering at full resolution, all targets are the same size `(width, height)`. Depending on the renderer, the last rendertarget can be skipped if SSAO is applied in the same pass.
 
-
-
 ### Required inputs
 
 - Depth buffer
 - Normal buffer
-
-
 
 ### Further improvements
 
@@ -53,11 +47,7 @@ When rendering at full resolution, all targets are the same size `(width, height
 - There might be better distributions for the samples.
 - Temporal filtering can push the quality by dithering over time (already tested).
 
-
-
 ----
-
-
 
 Here's a comparison shot of the algorithm. It is injected into a game (*The House of da Vinci*) using custom shaders in [*ReShade*](https://github.com/crosire/reshade):
 
