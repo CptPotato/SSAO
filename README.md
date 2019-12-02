@@ -1,3 +1,5 @@
+***this repository is still work in progress***
+
 # SSAO
 
 This is my SSAO algorithm implemented as a [SHADERed](https://github.com/dfranx/SHADERed) project (*using version 1.2.4*).
