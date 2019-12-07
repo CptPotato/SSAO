@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<project version="2">
+	<pipeline>
+		<pass name="OpaqueScene" type="shader" active="true">
+			<shader type="vs" path="shaders\OpaqueVS.hlsl" entry="main" />
+			<shader type="ps" path="shaders\OpaquePS.hlsl" entry="main" />
+			<inputlayout>
+				<item value="Position" semantic="POSITION" />
+				<item value="Normal" semantic="NORMAL" />
+				<item value="Texcoord" semantic="TEXCOORD0" />
+			</inputlayout>
+			<rendertexture />
+			<items>
+				<item name="Sphere" type="geometry">
+					<type>Sphere</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<scaleX>1.20000005</scaleX>
+					<scaleY>1.20000005</scaleY>
+					<scaleZ>1.20000005</scaleZ>
+					<pitch>1.57079637</pitch>
+					<x>4.60049295</x>
+					<y>-0.837215245</y>
+					<z>2.76365805</z>
+					<topology>TriangleList</topology>
+				</item>
+				<item name="Teapot" type="model">
+					<filepath>meshes\Teapot.obj</filepath>
+					<grouponly>false</grouponly>
+					<scaleX>0.699999988</scaleX>
+					<scaleY>0.800000012</scaleY>
+					<scaleZ>0.699999988</scaleZ>
+					<yaw>0.34906584</yaw>
+					<x>-4.30955982</x>
+					<y>-2</y>
+					<z>2.11727667</z>
+				</item>
+				<item name="Plane" type="geometry">
+					<type>Cube</type>
+					<width>8</width>
+					<height>0.25</height>
+					<depth>8</depth>
+					<scaleX>2</scaleX>
+					<scaleZ>2</scaleZ>
+					<y>-2.125</y>
+					<topology>TriangleList</topology>
+				</item>
+				<item name="Statue" type="model">
+					<filepath>meshes\statue.obj</filepath>
+					<grouponly>false</grouponly>
+					<scaleX>0.25</scaleX>
+					<scaleY>0.25</scaleY>
+					<scaleZ>0.25</scaleZ>
+					<yaw>6.10865211</yaw>
+					<x>-0.200000003</x>
+					<y>-2</y>
+					<z>0.310000002</z>
+				</item>
+				<item name="Cube" type="geometry">
+					<type>Cube</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<scaleX>2</scaleX>
+					<scaleY>2</scaleY>
+					<scaleZ>2</scaleZ>
+					<yaw>0.34906584</yaw>
+					<x>-1.90107489</x>
+					<y>-1</y>
+					<z>-4.44128227</z>
+					<topology>TriangleList</topology>
+				</item>
+			</items>
+			<itemvalues />
+			<variables>
+				<variable type="float4x4" name="matGeo" system="GeometryTransform" />
+				<variable type="float4x4" name="matVP" system="ViewProjection" />
+				<variable type="float2" name="viewport" system="ViewportSize" />
+				<variable type="float2" name="mouse" system="MousePosition" />
+			</variables>
+			<macros />
+		</pass>
+		<pass name="DebugOverlay" type="shader" active="true">
+			<shader type="vs" path="shaders\OverlayVS.hlsl" entry="main" />
+			<shader type="ps" path="shaders\OverlayPS.hlsl" entry="main" />
+			<inputlayout>
+				<item value="Position" semantic="POSITION" />
+				<item value="Normal" semantic="NORMAL" />
+				<item value="Texcoord" semantic="TEXCOORD0" />
+			</inputlayout>
+			<rendertexture />
+			<items>
+				<item name="OverlayQuad" type="geometry">
+					<type>ScreenQuadNDC</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<topology>TriangleList</topology>
+				</item>
+			</items>
+			<itemvalues />
+			<variables>
+				<variable type="float2" name="viewport" system="ViewportSize" />
+			</variables>
+			<macros />
+		</pass>
+	</pipeline>
+	<objects>
+		<object type="texture" path="textures\default.png">
+			<bind slot="0" name="OpaqueScene" />
+		</object>
+		<object type="texture" path="textures\debug.png">
+			<bind slot="0" name="DebugOverlay" />
+		</object>
+	</objects>
+	<cameras />
+	<settings>
+		<entry type="property" name="OpaqueScene" item="pipe" />
+		<entry type="file" name="OpaqueScene" shader="vs" />
+		<entry type="file" name="OpaqueScene" shader="ps" />
+		<entry type="file" name="DebugOverlay" shader="vs" />
+		<entry type="file" name="DebugOverlay" shader="ps" />
+		<entry type="camera" fp="false">
+			<distance>13</distance>
+			<pitch>15</pitch>
+			<yaw>334</yaw>
+			<roll>360</roll>
+		</entry>
+		<entry type="clearcolor" r="0.0901960805" g="0.0901960805" b="0.129411772" a="0" />
+		<entry type="usealpha" val="false" />
+	</settings>
+</project>

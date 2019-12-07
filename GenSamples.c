@@ -35,7 +35,8 @@ float RadiusFunction(float r)
 // distribution is roughly uniform in a hemisphere (z+)
 // the algorithm discards samples based on their position which may result in an infinite loop with bad parameters (I don't think it's possible, though)
 //
-// out: xyz-point array [ x0, y0, z0, x1, y1, z1, ... xn, yn, zn ]
+// out: xyzw-point array [ x0, y0, z0, w0, x1, y1, z1, w1, ... xn, yn, zn, wn ]
+// w: occlusion factor of the sample
 void GenSamples(float * out, int count)
 {
 	// ---- parameters
@@ -77,20 +78,20 @@ void GenSamples(float * out, int count)
 			}
 			
 			// but remap to [-1; 1]
-			out[i * 3 + j] = _r * 2.0f - 1.0f;
+			out[i * 4 + j] = _r * 2.0f - 1.0f;
 		}
 		
 		// volume check (hemisphere)
-		float l2 = out[i * 3] * out[i * 3] + out[i * 3 + 1] * out[i * 3 + 1] + out[i * 3 + 2] * out[i * 3 + 2];
-		if(l2 > 1.0f || out[i * 3 + 2] < 0)
+		float l2 = out[i * 4] * out[i * 4] + out[i * 4 + 1] * out[i * 4 + 1] + out[i * 4 + 2] * out[i * 4 + 2];
+		if(l2 > 1.0f || out[i * 4 + 2] < 0)
 		{
 			continue; // sample invalid, discard
 		}
 		else
 		{
 			// sample valid
-			cx += out[i * 3];
-			cy += out[i * 3 + 1];
+			cx += out[i * 4];
+			cy += out[i * 4 + 1];
 			i++;
 		}
 	}
@@ -103,10 +104,10 @@ void GenSamples(float * out, int count)
 	float l2max = 0;
 	for(i = 0; i < count; i++)
 	{
-		out[i * 3] -= cx;
-		out[i * 3 + 1] -= cy;
+		out[i * 4] -= cx;
+		out[i * 4 + 1] -= cy;
 		
-		float l2 = out[i * 3] * out[i * 3] + out[i * 3 + 1] * out[i * 3 + 1] + out[i * 3 + 2] * out[i * 3 + 2];
+		float l2 = out[i * 4] * out[i * 4] + out[i * 4 + 1] * out[i * 4 + 1] + out[i * 4 + 2] * out[i * 4 + 2];
 		
 		if(l2 > l2max)
 		{
@@ -115,20 +116,21 @@ void GenSamples(float * out, int count)
 	}
 	
 	// apply radius function, normalize & add z bias
+	// + calculate occlusion weight
 	float normlen = 1.0f / sqrt(l2max); // length normalize factor
 	for(i = 0; i < count; i++)
 	{
-		out[i * 3] *= normlen;
-		out[i * 3 + 1] *= normlen;
-		out[i * 3 + 2] *= normlen;
+		out[i * 4] *= normlen;
+		out[i * 4 + 1] *= normlen;
+		out[i * 4 + 2] *= normlen;
 		
-		float l = sqrt(out[i * 3] * out[i * 3] + out[i * 3 + 1] * out[i * 3 + 1] + out[i * 3 + 2] * out[i * 3 + 2]);
+		float l = sqrt(out[i * 4] * out[i * 4] + out[i * 4 + 1] * out[i * 4 + 1] + out[i * 4 + 2] * out[i * 4 + 2]);
 		
-		out[i * 3] *= RadiusFunction(l) / l * radius;
-		out[i * 3 + 1] *= RadiusFunction(l) / l * radius;
-		out[i * 3 + 2] *= RadiusFunction(l) / l * radius;
+		out[i * 4] *= RadiusFunction(l) / l * radius;
+		out[i * 4 + 1] *= RadiusFunction(l) / l * radius;
+		out[i * 4 + 2] *= RadiusFunction(l) / l * radius;
 		
-		out[i * 3 + 2] += z_shift;
+		out[i * 4 + 2] += z_shift;
 	}
 }
 
@@ -139,12 +141,12 @@ int main(int argc, char * argv[])
 	GenSamples(samples, SAMPLE_COUNT);
 	
 	// print with formatting
-	printf("const float3 samples[%d] =\n{\n", SAMPLE_COUNT);
+	printf("const float4 samples[%d] =\n{\n", SAMPLE_COUNT);
 	
 	int i;
 	for(i = 0; i < SAMPLE_COUNT; i++)
 	{
-		printf("\tfloat3(% f.0f, % f.0f, %f.0f)", samples[i * 3], samples[i * 3 + 1], samples[i * 3 + 2]);
+		printf("\tfloat4(% ff, % ff, %ff, %ff)", samples[i * 4], samples[i * 4 + 1], samples[i * 4 + 2], samples[i * 4 + 3]);
 		printf((i == SAMPLE_COUNT - 1) ? "\n" : ",\n");
 	}
 	
